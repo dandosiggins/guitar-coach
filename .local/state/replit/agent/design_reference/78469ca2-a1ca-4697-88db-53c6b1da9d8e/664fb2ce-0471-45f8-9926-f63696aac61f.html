@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Practice Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        'guitar-purple': '#6366f1',
+                        'guitar-amber': '#f59e0b',
+                        'dark-slate': '#0f172a',
+                        'dark-panel': '#1e293b',
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-dark-slate text-slate-100 font-sans min-h-screen">
+    <!-- @COMPONENT: AppHeader -->
+    <header class="bg-dark-panel border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-gradient-to-r from-guitar-purple to-guitar-amber rounded-lg flex items-center justify-center">
+                        <i class="fas fa-guitar text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-xl font-bold text-white">Guitar Practice Pro</h1>
+                </div>
+                
+                <nav class="hidden md:flex space-x-1">
+                    <button class="px-4 py-2 rounded-lg bg-guitar-purple text-white font-medium" data-tab="metronome">
+                        <i class="fas fa-clock mr-2"></i>Metronome
+                    </button>
+                    <button class="px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" data-tab="chords">
+                        <i class="fas fa-hand-paper mr-2"></i>Chords
+                    </button>
+                    <button class="px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" data-tab="scales">
+                        <i class="fas fa-music mr-2"></i>Scales
+                    </button>
+                    <button class="px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" data-tab="tuner">
+                        <i class="fas fa-broadcast-tower mr-2"></i>Tuner
+                    </button>
+                    <button class="px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" data-tab="practice">
+                        <i class="fas fa-clipboard-list mr-2"></i>Practice
+                    </button>
+                </nav>
+
+                <button class="md:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="md:hidden bg-dark-panel border-t border-slate-700">
+            <div class="px-4 py-2 space-y-1">
+                <button class="w-full text-left px-4 py-3 rounded-lg bg-guitar-purple text-white font-medium" data-tab="metronome">
+                    <i class="fas fa-clock mr-2"></i>Metronome
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" data-tab="chords">
+                    <i class="fas fa-hand-paper mr-2"></i>Chords
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" data-tab="scales">
+                    <i class="fas fa-music mr-2"></i>Scales
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" data-tab="tuner">
+                    <i class="fas fa-broadcast-tower mr-2"></i>Tuner
+                </button>
+                <button class="w-full text-left px-4 py-3 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" data-tab="practice">
+                    <i class="fas fa-clipboard-list mr-2"></i>Practice
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: AppHeader -->
+
+    <!-- @COMPONENT: MainContent -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- @COMPONENT: MetronomeSection -->
+        <section id="metronome-section" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Metronome Control -->
+                <div class="lg:col-span-2">
+                    <div class="bg-dark-panel rounded-xl p-8 border border-slate-700">
+                        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                            <i class="fas fa-clock mr-3 text-guitar-purple"></i>
+                            Metronome
+                        </h2>
+                        
+                        <!-- BPM Display -->
+                        <div class="text-center mb-8">
+                            <div class="inline-flex items-center justify-center w-32 h-32 rounded-full border-4 border-guitar-purple bg-gradient-to-r from-guitar-purple/20 to-guitar-amber/20 mb-4">
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold text-white" data-bind="metronome.bpm">120</div>
+                                    <div class="text-sm text-slate-400">BPM</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BPM Controls -->
+                        <div class="flex items-center justify-center space-x-4 mb-8">
+                            <button class="w-12 h-12 bg-slate-700 hover:bg-slate-600 rounded-full flex items-center justify-center text-white transition-colors" data-event="click:decreaseBPM">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <div class="flex-1 max-w-md">
+                                <input type="range" min="60" max="200" value="120" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider" data-bind="metronome.bpmSlider">
+                            </div>
+                            <button class="w-12 h-12 bg-slate-700 hover:bg-slate-600 rounded-full flex items-center justify-center text-white transition-colors" data-event="click:increaseBPM">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+
+                        <!-- Play/Pause Controls -->
+                        <div class="flex items-center justify-center space-x-4">
+                            <button class="bg-guitar-purple hover:bg-guitar-purple/80 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors flex items-center" data-event="click:toggleMetronome" data-implementation="Should use Web Audio API for precise timing">
+                                <i class="fas fa-play mr-3"></i>
+                                <span data-bind="metronome.playText">Start</span>
+                            </button>
+                            <button class="bg-slate-700 hover:bg-slate-600 text-white px-6 py-4 rounded-xl font-semibold transition-colors" data-event="click:resetMetronome">
+                                <i class="fas fa-stop"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time Signatures & Settings -->
+                <div class="space-y-6">
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-lg font-semibold text-white mb-4">Time Signature</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button class="p-3 rounded-lg bg-guitar-purple text-white font-semibold" data-bind="timeSignature.active">4/4</button>
+                            <button class="p-3 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition-colors">3/4</button>
+                            <button class="p-3 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition-colors">2/4</button>
+                            <button class="p-3 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition-colors">6/8</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-lg font-semibold text-white mb-4">Sound</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center justify-between">
+                                <span class="text-slate-300">Volume</span>
+                                <input type="range" min="0" max="100" value="70" class="w-24 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider" data-bind="metronome.volume">
+                            </label>
+                            <label class="flex items-center justify-between">
+                                <span class="text-slate-300">Accent Beat</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" value="" class="sr-only peer" checked data-bind="metronome.accent">
+                                    <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-guitar-purple"></div>
+                                </label>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Practice Timer -->
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-lg font-semibold text-white mb-4">Practice Timer</h3>
+                        <div class="text-center">
+                            <div class="text-2xl font-mono text-guitar-amber mb-3" data-bind="timer.display">00:00</div>
+                            <div class="flex space-x-2">
+                                <button class="flex-1 bg-green-600 hover:bg-green-500 text-white py-2 px-3 rounded-lg text-sm transition-colors" data-event="click:startTimer">
+                                    <i class="fas fa-play mr-1"></i>Start
+                                </button>
+                                <button class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-2 px-3 rounded-lg text-sm transition-colors" data-event="click:resetTimer">
+                                    <i class="fas fa-undo mr-1"></i>Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: MetronomeSection -->
+
+        <!-- @COMPONENT: ChordsSection -->
+        <section id="chords-section" class="tab-content hidden">
+            <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
+                <!-- Chord Library -->
+                <div class="xl:col-span-3">
+                    <div class="bg-dark-panel rounded-xl p-8 border border-slate-700">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+                            <h2 class="text-2xl font-bold text-white flex items-center">
+                                <i class="fas fa-hand-paper mr-3 text-guitar-purple"></i>
+                                Chord Library
+                            </h2>
+                            <div class="flex items-center space-x-4 mt-4 sm:mt-0">
+                                <select class="bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-guitar-purple focus:border-transparent" data-bind="chords.keyFilter">
+                                    <option>All Keys</option>
+                                    <option>C</option>
+                                    <option>D</option>
+                                    <option>E</option>
+                                    <option>F</option>
+                                    <option>G</option>
+                                    <option>A</option>
+                                    <option>B</option>
+                                </select>
+                                <select class="bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-guitar-purple focus:border-transparent" data-bind="chords.typeFilter">
+                                    <option>All Types</option>
+                                    <option>Major</option>
+                                    <option>Minor</option>
+                                    <option>7th</option>
+                                    <option>Minor 7th</option>
+                                    <option>Major 7th</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- @MAP: chords.filtered.map(chord => ( -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            <!-- Chord Card - C Major -->
+                            <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer" data-mock="true" data-event="click:selectChord">
+                                <div class="text-center mb-3">
+                                    <h3 class="text-lg font-bold text-white">C</h3>
+                                    <p class="text-sm text-slate-400">Major</p>
+                                </div>
+                                <!-- Chord Diagram -->
+                                <div class="bg-slate-700 rounded p-3 mb-3">
+                                    <div class="grid grid-cols-6 gap-1 text-xs">
+                                        <!-- Fret numbers -->
+                                        <div></div>
+                                        <div class="text-center text-slate-400">1</div>
+                                        <div class="text-center text-slate-400">2</div>
+                                        <div class="text-center text-slate-400">3</div>
+                                        <div class="text-center text-slate-400">4</div>
+                                        <div class="text-center text-slate-400">5</div>
+                                        
+                                        <!-- String markers -->
+                                        <div class="text-slate-400 text-right pr-2">E</div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+                                        <div class="h-4 border-b border-slate-500 relative"><div class="w-3 h-3 bg-guitar-purple rounded-full absolute -top-1.5 left-1/2 transform -translate-x-1/2"></div></div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+
+                                        <div class="text-slate-400 text-right pr-2">A</div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+                                        <div class="h-4 border-b border-slate-500 relative"><div class="w-3 h-3 bg-guitar-purple rounded-full absolute -top-1.5 left-1/2 transform -translate-x-1/2"></div></div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+
+                                        <div class="text-slate-400 text-right pr-2">D</div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+                                        <div class="h-4 border-b border-slate-500 relative"><div class="w-3 h-3 bg-guitar-purple rounded-full absolute -top-1.5 left-1/2 transform -translate-x-1/2"></div></div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+                                        <div class="h-4 border-b border-slate-500 relative"></div>
+                                    </div>
+                                </div>
+                                <div class="text-xs text-center text-slate-400">Fingers: 3-2-1</div>
+                            </div>
+
+                            <!-- Additional chord cards would be generated here -->
+                            <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer" data-mock="true">
+                                <div class="text-center mb-3">
+                                    <h3 class="text-lg font-bold text-white">G</h3>
+                                    <p class="text-sm text-slate-400">Major</p>
+                                </div>
+                                <div class="bg-slate-700 rounded p-3 mb-3 h-16 flex items-center justify-center">
+                                    <span class="text-slate-500 text-xs">Diagram</span>
+                                </div>
+                                <div class="text-xs text-center text-slate-400">Fingers: 3-2-4</div>
+                            </div>
+
+                            <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer" data-mock="true">
+                                <div class="text-center mb-3">
+                                    <h3 class="text-lg font-bold text-white">Am</h3>
+                                    <p class="text-sm text-slate-400">Minor</p>
+                                </div>
+                                <div class="bg-slate-700 rounded p-3 mb-3 h-16 flex items-center justify-center">
+                                    <span class="text-slate-500 text-xs">Diagram</span>
+                                </div>
+                                <div class="text-xs text-center text-slate-400">Fingers: 2-3-1</div>
+                            </div>
+
+                            <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer" data-mock="true">
+                                <div class="text-center mb-3">
+                                    <h3 class="text-lg font-bold text-white">F</h3>
+                                    <p class="text-sm text-slate-400">Major</p>
+                                </div>
+                                <div class="bg-slate-700 rounded p-3 mb-3 h-16 flex items-center justify-center">
+                                    <span class="text-slate-500 text-xs">Diagram</span>
+                                </div>
+                                <div class="text-xs text-center text-slate-400">Barré chord</div>
+                            </div>
+
+                            <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer" data-mock="true">
+                                <div class="text-center mb-3">
+                                    <h3 class="text-lg font-bold text-white">Em</h3>
+                                    <p class="text-sm text-slate-400">Minor</p>
+                                </div>
+                                <div class="bg-slate-700 rounded p-3 mb-3 h-16 flex items-center justify-center">
+                                    <span class="text-slate-500 text-xs">Diagram</span>
+                                </div>
+                                <div class="text-xs text-center text-slate-400">Fingers: 2-3</div>
+                            </div>
+
+                            <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer" data-mock="true">
+                                <div class="text-center mb-3">
+                                    <h3 class="text-lg font-bold text-white">D</h3>
+                                    <p class="text-sm text-slate-400">Major</p>
+                                </div>
+                                <div class="bg-slate-700 rounded p-3 mb-3 h-16 flex items-center justify-center">
+                                    <span class="text-slate-500 text-xs">Diagram</span>
+                                </div>
+                                <div class="text-xs text-center text-slate-400">Fingers: 1-3-2</div>
+                            </div>
+                        </div>
+                        <!-- @END_MAP )) -->
+                    </div>
+                </div>
+
+                <!-- Chord Progression Builder -->
+                <div>
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-lg font-semibold text-white mb-4">Progression Builder</h3>
+                        <div class="space-y-3 mb-6">
+                            <!-- @MAP: progression.chords.map(chord => ( -->
+                            <div class="flex items-center justify-between bg-slate-800 p-3 rounded-lg border border-slate-600" data-mock="true">
+                                <span class="text-white font-medium">C</span>
+                                <button class="text-red-400 hover:text-red-300">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center justify-between bg-slate-800 p-3 rounded-lg border border-slate-600" data-mock="true">
+                                <span class="text-white font-medium">Am</span>
+                                <button class="text-red-400 hover:text-red-300">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center justify-between bg-slate-800 p-3 rounded-lg border border-slate-600" data-mock="true">
+                                <span class="text-white font-medium">F</span>
+                                <button class="text-red-400 hover:text-red-300">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center justify-between bg-slate-800 p-3 rounded-lg border border-slate-600" data-mock="true">
+                                <span class="text-white font-medium">G</span>
+                                <button class="text-red-400 hover:text-red-300">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <button class="w-full bg-guitar-purple hover:bg-guitar-purple/80 text-white py-2 px-4 rounded-lg transition-colors" data-event="click:playProgression" data-implementation="Should use Web Audio API to play chord progression">
+                                <i class="fas fa-play mr-2"></i>Play Progression
+                            </button>
+                            <button class="w-full bg-slate-700 hover:bg-slate-600 text-white py-2 px-4 rounded-lg transition-colors" data-event="click:clearProgression">
+                                <i class="fas fa-trash mr-2"></i>Clear
+                            </button>
+                            <button class="w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded-lg transition-colors" data-event="click:saveProgression">
+                                <i class="fas fa-save mr-2"></i>Save
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Saved Progressions -->
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700 mt-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Saved Progressions</h3>
+                        <div class="space-y-2">
+                            <!-- @MAP: savedProgressions.map(progression => ( -->
+                            <div class="bg-slate-800 p-3 rounded-lg border border-slate-600 cursor-pointer hover:border-guitar-purple transition-colors" data-mock="true">
+                                <div class="text-white font-medium text-sm">C-Am-F-G</div>
+                                <div class="text-slate-400 text-xs">Classic Pop</div>
+                            </div>
+                            <div class="bg-slate-800 p-3 rounded-lg border border-slate-600 cursor-pointer hover:border-guitar-purple transition-colors" data-mock="true">
+                                <div class="text-white font-medium text-sm">Em-C-G-D</div>
+                                <div class="text-slate-400 text-xs">Folk Ballad</div>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: ChordsSection -->
+
+        <!-- @COMPONENT: ScalesSection -->
+        <section id="scales-section" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Fretboard Visualization -->
+                <div class="lg:col-span-2">
+                    <div class="bg-dark-panel rounded-xl p-8 border border-slate-700">
+                        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                            <i class="fas fa-music mr-3 text-guitar-purple"></i>
+                            Scale Practice
+                        </h2>
+
+                        <!-- Fretboard -->
+                        <div class="bg-gradient-to-r from-amber-900 to-amber-800 rounded-lg p-6 mb-6" data-implementation="This should render an interactive fretboard with highlighted scale notes">
+                            <div class="text-center mb-4">
+                                <h3 class="text-white font-semibold">C Major Scale - Position 1</h3>
+                            </div>
+                            
+                            <!-- Fretboard grid -->
+                            <div class="bg-amber-900/50 rounded p-4">
+                                <div class="grid grid-cols-13 gap-1 text-xs">
+                                    <!-- Fret markers -->
+                                    <div></div>
+                                    <div class="text-center text-amber-200 opacity-70">3</div>
+                                    <div></div>
+                                    <div class="text-center text-amber-200 opacity-70">5</div>
+                                    <div></div>
+                                    <div class="text-center text-amber-200 opacity-70">7</div>
+                                    <div></div>
+                                    <div class="text-center text-amber-200 opacity-70">9</div>
+                                    <div></div>
+                                    <div></div>
+                                    <div class="text-center text-amber-200 opacity-70">12</div>
+                                    <div></div>
+                                    <div></div>
+
+                                    <!-- Low E String -->
+                                    <div class="text-amber-200 text-right pr-2 font-mono">E</div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-amber rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+
+                                    <!-- A String -->
+                                    <div class="text-amber-200 text-right pr-2 font-mono">A</div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-amber rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-amber rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+
+                                    <!-- D String -->
+                                    <div class="text-amber-200 text-right pr-2 font-mono">D</div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-amber rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-amber rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+
+                                    <!-- G String -->
+                                    <div class="text-amber-200 text-right pr-2 font-mono">G</div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-amber rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-amber rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+
+                                    <!-- B String -->
+                                    <div class="text-amber-200 text-right pr-2 font-mono">B</div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-amber rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"></div>
+                                    <div class="h-6 border-b-2 border-amber-600 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+
+                                    <!-- High E String -->
+                                    <div class="text-amber-200 text-right pr-2 font-mono">e</div>
+                                    <div class="h-6 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 relative"></div>
+                                    <div class="h-6 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 relative"></div>
+                                    <div class="h-6 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 relative"><div class="w-4 h-4 bg-guitar-amber rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 relative"></div>
+                                    <div class="h-6 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 relative"></div>
+                                    <div class="h-6 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                    <div class="h-6 relative"></div>
+                                    <div class="h-6 relative"><div class="w-4 h-4 bg-guitar-purple rounded-full absolute -top-2 left-1/2 transform -translate-x-1/2"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- Legend -->
+                            <div class="flex justify-center mt-4 space-x-6">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-4 h-4 bg-guitar-amber rounded-full"></div>
+                                    <span class="text-amber-100 text-sm">Root Note</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-4 h-4 bg-guitar-purple rounded-full"></div>
+                                    <span class="text-amber-100 text-sm">Scale Note</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scale Controls -->
+                        <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 sm:space-x-4">
+                            <button class="bg-guitar-purple hover:bg-guitar-purple/80 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center" data-event="click:playScale" data-implementation="Should use Web Audio API to play scale notes">
+                                <i class="fas fa-play mr-2"></i>Play Scale
+                            </button>
+                            <div class="flex items-center space-x-2">
+                                <label class="text-slate-300">Speed:</label>
+                                <input type="range" min="60" max="140" value="80" class="w-24 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider" data-bind="scale.playbackSpeed">
+                                <span class="text-slate-300 text-sm w-12" data-bind="scale.speedDisplay">80 BPM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scale Selection -->
+                <div class="space-y-6">
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-lg font-semibold text-white mb-4">Scale Selection</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-slate-300 text-sm mb-2">Root Note</label>
+                                <select class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-guitar-purple focus:border-transparent" data-bind="scale.root">
+                                    <option value="C">C</option>
+                                    <option>C#/Db</option>
+                                    <option>D</option>
+                                    <option>D#/Eb</option>
+                                    <option>E</option>
+                                    <option>F</option>
+                                    <option>F#/Gb</option>
+                                    <option>G</option>
+                                    <option>G#/Ab</option>
+                                    <option>A</option>
+                                    <option>A#/Bb</option>
+                                    <option>B</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 text-sm mb-2">Scale Type</label>
+                                <select class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-4 py-2 focus:ring-2 focus:ring-guitar-purple focus:border-transparent" data-bind="scale.type">
+                                    <option value="major">Major</option>
+                                    <option>Natural Minor</option>
+                                    <option>Harmonic Minor</option>
+                                    <option>Melodic Minor</option>
+                                    <option>Dorian</option>
+                                    <option>Phrygian</option>
+                                    <option>Lydian</option>
+                                    <option>Mixolydian</option>
+                                    <option>Locrian</option>
+                                    <option>Pentatonic Major</option>
+                                    <option>Pentatonic Minor</option>
+                                    <option>Blues</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 text-sm mb-2">Position</label>
+                                <div class="grid grid-cols-5 gap-1">
+                                    <button class="bg-guitar-purple text-white p-2 rounded font-medium text-sm">1</button>
+                                    <button class="bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white p-2 rounded font-medium text-sm transition-colors">2</button>
+                                    <button class="bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white p-2 rounded font-medium text-sm transition-colors">3</button>
+                                    <button class="bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white p-2 rounded font-medium text-sm transition-colors">4</button>
+                                    <button class="bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white p-2 rounded font-medium text-sm transition-colors">5</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scale Information -->
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-lg font-semibold text-white mb-4">Scale Info</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <span class="text-slate-400 text-sm">Notes:</span>
+                                <div class="text-white font-mono mt-1">C D E F G A B</div>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 text-sm">Pattern:</span>
+                                <div class="text-white font-mono mt-1">W W H W W W H</div>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 text-sm">Intervals:</span>
+                                <div class="text-white font-mono mt-1">1 2 3 4 5 6 7</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Practice Exercises -->
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-lg font-semibold text-white mb-4">Practice Exercises</h3>
+                        <div class="space-y-2">
+                            <button class="w-full text-left p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-guitar-purple transition-colors" data-event="click:startExercise" data-exercise="ascending">
+                                <div class="text-white font-medium">Ascending Scale</div>
+                                <div class="text-slate-400 text-sm">Play from lowest to highest note</div>
+                            </button>
+                            <button class="w-full text-left p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-guitar-purple transition-colors" data-event="click:startExercise" data-exercise="descending">
+                                <div class="text-white font-medium">Descending Scale</div>
+                                <div class="text-slate-400 text-sm">Play from highest to lowest note</div>
+                            </button>
+                            <button class="w-full text-left p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-guitar-purple transition-colors" data-event="click:startExercise" data-exercise="intervals">
+                                <div class="text-white font-medium">Interval Practice</div>
+                                <div class="text-slate-400 text-sm">Practice thirds, fourths, fifths</div>
+                            </button>
+                            <button class="w-full text-left p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-guitar-purple transition-colors" data-event="click:startExercise" data-exercise="random">
+                                <div class="text-white font-medium">Random Notes</div>
+                                <div class="text-slate-400 text-sm">Random scale notes for ear training</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: ScalesSection -->
+
+        <!-- @COMPONENT: TunerSection -->
+        <section id="tuner-section" class="tab-content hidden">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-dark-panel rounded-xl p-8 border border-slate-700">
+                    <h2 class="text-2xl font-bold text-white mb-8 text-center flex items-center justify-center">
+                        <i class="fas fa-broadcast-tower mr-3 text-guitar-purple"></i>
+                        Guitar Tuner
+                    </h2>
+
+                    <!-- Tuning Display -->
+                    <div class="text-center mb-8">
+                        <div class="bg-slate-800 rounded-xl p-8 mb-6">
+                            <div class="text-6xl font-bold text-guitar-amber mb-2" data-bind="tuner.detectedNote">A</div>
+                            <div class="text-xl text-slate-400 mb-4" data-bind="tuner.frequency">440 Hz</div>
+                            
+                            <!-- Tuning Indicator -->
+                            <div class="flex items-center justify-center mb-6">
+                                <div class="w-80 h-4 bg-slate-700 rounded-full relative">
+                                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded"></div>
+                                    <!-- Tuning needle -->
+                                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-guitar-purple rounded-full" style="margin-left: 10px;" data-bind="tuner.needlePosition"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between text-sm text-slate-400 max-w-xs mx-auto">
+                                <span>Flat</span>
+                                <span class="text-green-400 font-semibold" data-bind="tuner.status">In Tune</span>
+                                <span>Sharp</span>
+                            </div>
+                        </div>
+
+                        <!-- Microphone Control -->
+                        <button class="bg-guitar-purple hover:bg-guitar-purple/80 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors flex items-center mx-auto mb-6" data-event="click:toggleMicrophone" data-implementation="Should request microphone permission and use Web Audio API for pitch detection">
+                            <i class="fas fa-microphone mr-3" data-bind="tuner.micIcon"></i>
+                            <span data-bind="tuner.micText">Start Listening</span>
+                        </button>
+
+                        <p class="text-slate-400 text-sm">Play a note on your guitar to begin tuning</p>
+                    </div>
+
+                    <!-- String Reference -->
+                    <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                        <!-- @MAP: tuner.strings.map(string => ( -->
+                        <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer text-center" data-mock="true" data-event="click:playReference" data-string="E4">
+                            <div class="text-2xl font-bold text-guitar-amber mb-1">E</div>
+                            <div class="text-sm text-slate-400 mb-2">329.6 Hz</div>
+                            <div class="text-xs text-slate-500">1st String</div>
+                            <button class="mt-2 bg-guitar-purple hover:bg-guitar-purple/80 text-white px-3 py-1 rounded text-xs transition-colors" data-implementation="Should play reference tone using Web Audio API">
+                                <i class="fas fa-play mr-1"></i>Play
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer text-center" data-mock="true">
+                            <div class="text-2xl font-bold text-guitar-amber mb-1">B</div>
+                            <div class="text-sm text-slate-400 mb-2">246.9 Hz</div>
+                            <div class="text-xs text-slate-500">2nd String</div>
+                            <button class="mt-2 bg-guitar-purple hover:bg-guitar-purple/80 text-white px-3 py-1 rounded text-xs transition-colors">
+                                <i class="fas fa-play mr-1"></i>Play
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer text-center" data-mock="true">
+                            <div class="text-2xl font-bold text-guitar-amber mb-1">G</div>
+                            <div class="text-sm text-slate-400 mb-2">196.0 Hz</div>
+                            <div class="text-xs text-slate-500">3rd String</div>
+                            <button class="mt-2 bg-guitar-purple hover:bg-guitar-purple/80 text-white px-3 py-1 rounded text-xs transition-colors">
+                                <i class="fas fa-play mr-1"></i>Play
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer text-center" data-mock="true">
+                            <div class="text-2xl font-bold text-guitar-amber mb-1">D</div>
+                            <div class="text-sm text-slate-400 mb-2">146.8 Hz</div>
+                            <div class="text-xs text-slate-500">4th String</div>
+                            <button class="mt-2 bg-guitar-purple hover:bg-guitar-purple/80 text-white px-3 py-1 rounded text-xs transition-colors">
+                                <i class="fas fa-play mr-1"></i>Play
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer text-center" data-mock="true">
+                            <div class="text-2xl font-bold text-guitar-amber mb-1">A</div>
+                            <div class="text-sm text-slate-400 mb-2">110.0 Hz</div>
+                            <div class="text-xs text-slate-500">5th String</div>
+                            <button class="mt-2 bg-guitar-purple hover:bg-guitar-purple/80 text-white px-3 py-1 rounded text-xs transition-colors">
+                                <i class="fas fa-play mr-1"></i>Play
+                            </button>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-lg p-4 border border-slate-600 hover:border-guitar-purple transition-colors cursor-pointer text-center" data-mock="true">
+                            <div class="text-2xl font-bold text-guitar-amber mb-1">E</div>
+                            <div class="text-sm text-slate-400 mb-2">82.4 Hz</div>
+                            <div class="text-xs text-slate-500">6th String</div>
+                            <button class="mt-2 bg-guitar-purple hover:bg-guitar-purple/80 text-white px-3 py-1 rounded text-xs transition-colors">
+                                <i class="fas fa-play mr-1"></i>Play
+                            </button>
+                        </div>
+                        <!-- @END_MAP )) -->
+                    </div>
+
+                    <!-- Tuning Options -->
+                    <div class="mt-8 flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 bg-slate-800 rounded-lg p-4">
+                        <div class="flex items-center space-x-4">
+                            <label class="text-slate-300 text-sm">Reference Pitch:</label>
+                            <select class="bg-slate-700 border border-slate-600 text-white rounded px-3 py-1 text-sm focus:ring-2 focus:ring-guitar-purple focus:border-transparent" data-bind="tuner.referencePitch">
+                                <option>A4 = 440 Hz</option>
+                                <option>A4 = 438 Hz</option>
+                                <option>A4 = 442 Hz</option>
+                                <option>A4 = 444 Hz</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <label class="text-slate-300 text-sm">Auto-tune sensitivity:</label>
+                            <input type="range" min="1" max="10" value="5" class="w-20 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider" data-bind="tuner.sensitivity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: TunerSection -->
+
+        <!-- @COMPONENT: PracticeSection -->
+        <section id="practice-section" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Practice Session -->
+                <div class="lg:col-span-2">
+                    <div class="bg-dark-panel rounded-xl p-8 border border-slate-700 mb-8">
+                        <h2 class="text-2xl font-bold text-white mb-6 flex items-center">
+                            <i class="fas fa-clipboard-list mr-3 text-guitar-purple"></i>
+                            Today's Practice Session
+                        </h2>
+
+                        <!-- Current Exercise -->
+                        <div class="bg-slate-800 rounded-lg p-6 border border-slate-600 mb-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-white">C Major Scale - Position 1</h3>
+                                <span class="bg-guitar-amber text-dark-slate px-3 py-1 rounded-full text-sm font-semibold">Active</span>
+                            </div>
+                            <p class="text-slate-300 mb-4">Practice ascending and descending patterns at 80 BPM</p>
+                            <div class="flex items-center space-x-4">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-clock text-guitar-purple"></i>
+                                    <span class="text-slate-300 text-sm">Duration:</span>
+                                    <span class="text-white font-semibold">15 min</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-tachometer-alt text-guitar-purple"></i>
+                                    <span class="text-slate-300 text-sm">BPM:</span>
+                                    <span class="text-white font-semibold">80</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Session Progress -->
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="text-white font-medium">Session Progress</h4>
+                                <span class="text-slate-300 text-sm">2 of 5 exercises completed</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-guitar-purple to-guitar-amber h-3 rounded-full" style="width: 40%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Exercise List -->
+                        <div class="space-y-3">
+                            <!-- @MAP: practiceSession.exercises.map(exercise => ( -->
+                            <div class="flex items-center justify-between bg-slate-800 rounded-lg p-4 border border-slate-600" data-mock="true">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-check text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-white font-medium">Chord Changes - C-Am-F-G</div>
+                                        <div class="text-slate-400 text-sm">10 minutes • Completed</div>
+                                    </div>
+                                </div>
+                                <button class="text-slate-400 hover:text-white">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            </div>
+
+                            <div class="flex items-center justify-between bg-slate-800 rounded-lg p-4 border border-slate-600" data-mock="true">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-check text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-white font-medium">Strumming Pattern Practice</div>
+                                        <div class="text-slate-400 text-sm">15 minutes • Completed</div>
+                                    </div>
+                                </div>
+                                <button class="text-slate-400 hover:text-white">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            </div>
+
+                            <div class="flex items-center justify-between bg-guitar-purple/20 rounded-lg p-4 border-2 border-guitar-purple" data-mock="true">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-guitar-purple rounded-full flex items-center justify-center">
+                                        <i class="fas fa-play text-white text-sm"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-white font-medium">C Major Scale - Position 1</div>
+                                        <div class="text-slate-400 text-sm">15 minutes • In Progress</div>
+                                    </div>
+                                </div>
+                                <button class="text-slate-400 hover:text-white">
+                                    <i class="fas fa-pause"></i>
+                                </button>
+                            </div>
+
+                            <div class="flex items-center justify-between bg-slate-800 rounded-lg p-4 border border-slate-600 opacity-50" data-mock="true">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center">
+                                        <span class="text-slate-400 text-sm font-bold">4</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-slate-300 font-medium">Fingerpicking Exercise</div>
+                                        <div class="text-slate-500 text-sm">20 minutes • Upcoming</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between bg-slate-800 rounded-lg p-4 border border-slate-600 opacity-50" data-mock="true">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center">
+                                        <span class="text-slate-400 text-sm font-bold">5</span>
+                                    </div>
+                                    <div>
+                                        <div class="text-slate-300 font-medium">Song Practice - "Wonderwall"</div>
+                                        <div class="text-slate-500 text-sm">25 minutes • Upcoming</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+
+                        <!-- Session Controls -->
+                        <div class="flex items-center justify-center space-x-4 mt-8">
+                            <button class="bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors" data-event="click:continueSession">
+                                <i class="fas fa-play mr-2"></i>Continue Session
+                            </button>
+                            <button class="bg-slate-700 hover:bg-slate-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors" data-event="click:pauseSession">
+                                <i class="fas fa-pause mr-2"></i>Pause
+                            </button>
+                            <button class="bg-red-600 hover:bg-red-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors" data-event="click:endSession">
+                                <i class="fas fa-stop mr-2"></i>End Session
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Practice Statistics -->
+                    <div class="bg-dark-panel rounded-xl p-8 border border-slate-700">
+                        <h3 class="text-xl font-bold text-white mb-6">Practice Statistics</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            <div class="bg-slate-800 rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-guitar-amber mb-1" data-bind="stats.todayMinutes">45</div>
+                                <div class="text-slate-400 text-sm">Minutes Today</div>
+                            </div>
+                            <div class="bg-slate-800 rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-guitar-purple mb-1" data-bind="stats.weekMinutes">180</div>
+                                <div class="text-slate-400 text-sm">Minutes This Week</div>
+                            </div>
+                            <div class="bg-slate-800 rounded-lg p-4 text-center">
+                                <div class="text-2xl font-bold text-green-400 mb-1" data-bind="stats.streak">7</div>
+                                <div class="text-slate-400 text-sm">Day Streak</div>
+                            </div>
+                        </div>
+
+                        <!-- Weekly Progress -->
+                        <div>
+                            <h4 class="text-white font-medium mb-3">Weekly Progress</h4>
+                            <div class="grid grid-cols-7 gap-2">
+                                <!-- @MAP: stats.weeklyProgress.map(day => ( -->
+                                <div class="text-center" data-mock="true">
+                                    <div class="text-xs text-slate-400 mb-1">Mon</div>
+                                    <div class="bg-guitar-purple h-16 rounded flex items-end justify-center">
+                                        <div class="bg-guitar-amber h-12 w-full rounded-b"></div>
+                                    </div>
+                                    <div class="text-xs text-slate-300 mt-1">30m</div>
+                                </div>
+                                <div class="text-center" data-mock="true">
+                                    <div class="text-xs text-slate-400 mb-1">Tue</div>
+                                    <div class="bg-guitar-purple h-16 rounded flex items-end justify-center">
+                                        <div class="bg-guitar-amber h-10 w-full rounded-b"></div>
+                                    </div>
+                                    <div class="text-xs text-slate-300 mt-1">25m</div>
+                                </div>
+                                <div class="text-center" data-mock="true">
+                                    <div class="text-xs text-slate-400 mb-1">Wed</div>
+                                    <div class="bg-guitar-purple h-16 rounded flex items-end justify-center">
+                                        <div class="bg-guitar-amber h-8 w-full rounded-b"></div>
+                                    </div>
+                                    <div class="text-xs text-slate-300 mt-1">20m</div>
+                                </div>
+                                <div class="text-center" data-mock="true">
+                                    <div class="text-xs text-slate-400 mb-1">Thu</div>
+                                    <div class="bg-guitar-purple h-16 rounded flex items-end justify-center">
+                                        <div class="bg-guitar-amber h-14 w-full rounded-b"></div>
+                                    </div>
+                                    <div class="text-xs text-slate-300 mt-1">35m</div>
+                                </div>
+                                <div class="text-center" data-mock="true">
+                                    <div class="text-xs text-slate-400 mb-1">Fri</div>
+                                    <div class="bg-guitar-purple h-16 rounded flex items-end justify-center">
+                                        <div class="bg-guitar-amber h-6 w-full rounded-b"></div>
+                                    </div>
+                                    <div class="text-xs text-slate-300 mt-1">15m</div>
+                                </div>
+                                <div class="text-center" data-mock="true">
+                                    <div class="text-xs text-slate-400 mb-1">Sat</div>
+                                    <div class="bg-guitar-purple h-16 rounded flex items-end justify-center">
+                                        <div class="bg-guitar-amber h-16 w-full rounded"></div>
+                                    </div>
+                                    <div class="text-xs text-slate-300 mt-1">40m</div>
+                                </div>
+                                <div class="text-center" data-mock="true">
+                                    <div class="text-xs text-slate-400 mb-1">Sun</div>
+                                    <div class="bg-guitar-purple h-16 rounded flex items-end justify-center">
+                                        <div class="bg-guitar-amber/50 h-11 w-full rounded-b border-2 border-dashed border-guitar-amber"></div>
+                                    </div>
+                                    <div class="text-xs text-guitar-amber mt-1">In progress</div>
+                                </div>
+                                <!-- @END_MAP )) -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practice Planner -->
+                <div class="space-y-6">
+                    <!-- Quick Start -->
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-lg font-semibold text-white mb-4">Quick Start</h3>
+                        <div class="space-y-3">
+                            <button class="w-full text-left p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-guitar-purple transition-colors" data-event="click:startQuickSession" data-type="warmup">
+                                <div class="text-white font-medium">5-Minute Warm-up</div>
+                                <div class="text-slate-400 text-xs">Basic stretches and scales</div>
+                            </button>
+                            <button class="w-full text-left p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-guitar-purple transition-colors" data-event="click:startQuickSession" data-type="chords">
+                                <div class="text-white font-medium">15-Minute Chord Practice</div>
+                                <div class="text-slate-400 text-xs">Focus on chord changes</div>
+                            </button>
+                            <button class="w-full text-left p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-guitar-purple transition-colors" data-event="click:startQuickSession" data-type="scales">
+                                <div class="text-white font-medium">20-Minute Scale Session</div>
+                                <div class="text-slate-400 text-xs">Scale patterns and exercises</div>
+                            </button>
+                            <button class="w-full text-left p-3 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-guitar-purple transition-colors" data-event="click:startQuickSession" data-type="technique">
+                                <div class="text-white font-medium">30-Minute Technique</div>
+                                <div class="text-slate-400 text-xs">Advanced techniques and exercises</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Goals -->
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-lg font-semibold text-white mb-4">Practice Goals</h3>
+                        <div class="space-y-4">
+                            <!-- @MAP: practiceGoals.map(goal => ( -->
+                            <div class="bg-slate-800 rounded-lg p-4 border border-slate-600" data-mock="true">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-white font-medium">Learn "Wonderwall"</span>
+                                    <span class="text-guitar-amber text-sm">75%</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2 mb-2">
+                                    <div class="bg-gradient-to-r from-guitar-purple to-guitar-amber h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                                <div class="text-slate-400 text-xs">Target: End of month</div>
+                            </div>
+
+                            <div class="bg-slate-800 rounded-lg p-4 border border-slate-600" data-mock="true">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-white font-medium">Master F Chord</span>
+                                    <span class="text-guitar-amber text-sm">45%</span>
+                                </div>
+                                <div class="w-full bg-slate-700 rounded-full h-2 mb-2">
+                                    <div class="bg-gradient-to-r from-guitar-purple to-guitar-amber h-2 rounded-full" style="width: 45%"></div>
+                                </div>
+                                <div class="text-slate-400 text-xs">Target: Next week</div>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                        
+                        <button class="w-full mt-4 bg-guitar-purple hover:bg-guitar-purple/80 text-white py-2 px-4 rounded-lg transition-colors text-sm" data-event="click:addGoal">
+                            <i class="fas fa-plus mr-2"></i>Add New Goal
+                        </button>
+                    </div>
+
+                    <!-- Practice Tips -->
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-lg font-semibold text-white mb-4">Today's Tip</h3>
+                        <div class="bg-slate-800 rounded-lg p-4 border-l-4 border-guitar-amber">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0 w-8 h-8 bg-guitar-amber rounded-full flex items-center justify-center">
+                                    <i class="fas fa-lightbulb text-dark-slate"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium mb-2">Practice Slow, Play Fast</h4>
+                                    <p class="text-slate-300 text-sm">Start practicing new songs or techniques at a slow tempo. Gradually increase the speed as you become more comfortable. Your muscle memory will thank you!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Practice History -->
+                    <div class="bg-dark-panel rounded-xl p-6 border border-slate-700">
+                        <h3 class="text-lg font-semibold text-white mb-4">Recent Sessions</h3>
+                        <div class="space-y-3">
+                            <!-- @MAP: recentSessions.map(session => ( -->
+                            <div class="flex items-center justify-between text-sm" data-mock="true">
+                                <div>
+                                    <div class="text-white font-medium">Morning Practice</div>
+                                    <div class="text-slate-400 text-xs">Chord changes • 25 min</div>
+                                </div>
+                                <div class="text-slate-400 text-xs">Today, 9:30 AM</div>
+                            </div>
+                            <div class="flex items-center justify-between text-sm" data-mock="true">
+                                <div>
+                                    <div class="text-white font-medium">Scale Practice</div>
+                                    <div class="text-slate-400 text-xs">C Major patterns • 20 min</div>
+                                </div>
+                                <div class="text-slate-400 text-xs">Yesterday, 7:15 PM</div>
+                            </div>
+                            <div class="flex items-center justify-between text-sm" data-mock="true">
+                                <div>
+                                    <div class="text-white font-medium">Song Practice</div>
+                                    <div class="text-slate-400 text-xs">Wonderwall • 35 min</div>
+                                </div>
+                                <div class="text-slate-400 text-xs">Yesterday, 2:45 PM</div>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: PracticeSection -->
+
+    </main>
+    <!-- @END_COMPONENT: MainContent -->
+
+    <!-- Custom Styles for sliders -->
+    <style>
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #6366f1;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #6366f1;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .slider::-webkit-slider-track {
+            height: 8px;
+            border-radius: 4px;
+            background: #475569;
+        }
+
+        .slider::-moz-range-track {
+            height: 8px;
+            border-radius: 4px;
+            background: #475569;
+        }
+    </style>
+
+    <script>
+        // Tab switching functionality
+        (function() {
+            const tabButtons = document.querySelectorAll('[data-tab]');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const targetTab = e.currentTarget.getAttribute('data-tab');
+                    
+                    // Remove active states
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('bg-guitar-purple', 'text-white');
+                        btn.classList.add('text-slate-300', 'hover:text-white', 'hover:bg-slate-700');
+                    });
+                    
+                    // Add active state to clicked button
+                    e.currentTarget.classList.add('bg-guitar-purple', 'text-white');
+                    e.currentTarget.classList.remove('text-slate-300', 'hover:text-white', 'hover:bg-slate-700');
+                    
+                    // Hide all tab contents
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    // Show target tab content
+                    const targetContent = document.getElementById(targetTab + '-section');
+                    if (targetContent) {
+                        targetContent.classList.remove('hidden');
+                    }
+                });
+            });
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.querySelector('.md\\:hidden button');
+            const mobileMenu = document.querySelector('.md\\:hidden + div');
+            let mobileMenuOpen = false;
+
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenuOpen = !mobileMenuOpen;
+                    if (mobileMenuOpen) {
+                        mobileMenu.classList.remove('hidden');
+                    } else {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            }
+
+            // TODO: Implement business logic for:
+            // - Web Audio API metronome functionality
+            // - Microphone access and pitch detection for tuner
+            // - Chord progression playback
+            // - Scale audio playback
+            // - Practice session timing and tracking
+            // - Data persistence for practice statistics
+            // - Reference tone generation for tuner
+        })();
+    </script>
+</body>
+</html>
